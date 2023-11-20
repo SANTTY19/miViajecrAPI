@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using api_miviajecr.Services.ServicioDenuncias;
 using api_miviajecr.Services.ServicioHistoricoLugaresVisitado;
 using api_miviajecr.Services.ServicioFavoritos;
-
+using api_miviajecr.Services.ServicioInmuebles;
 
 namespace api_miviajecr
 {
@@ -37,12 +37,18 @@ namespace api_miviajecr
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddControllers().AddXmlSerializerFormatters();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "miViajecrApi", Version = "v1" });
+                c.ResolveConflictingActions(apiDesc => apiDesc.First());
+            });
             services.AddDbContext<tiusr27pl_ApimisviajescrContext>(o =>
             {
                 o.UseSqlServer(Configuration.GetConnectionString("SqlConnection"));
             });
+            services.AddScoped<IAmenidadRepositorio, AmenidadRepositorio>();
+            services.AddScoped<IDetalle, Detalle>();
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             services.AddScoped<ITipoUsuarioRepositorio, TipoUsuarioRepositorio>();
             services.AddScoped<ICalificacionUsuarioRepositorio, CalificacionUsuarioRepositorio>();
@@ -91,14 +97,14 @@ namespace api_miviajecr
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiviajeCr_API");
-                c.DocumentTitle = "MiviajeCr_API";
+                c.SwaggerEndpoint("./v1/swagger.json", "miViajecrApi v1");
+                c.DocumentTitle = "miViajecrApi";
             });
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+           app.UseHttpsRedirection();
+            
+            app.UseDeveloperExceptionPage();
+            
 
             app.UseRouting();
 
