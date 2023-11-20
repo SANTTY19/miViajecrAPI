@@ -8,7 +8,7 @@ namespace api_miviajecr.Services.ServicioInmueble
     {
         Task<List<Inmueble>> ObtenerInmuebles();
         Task<int> InsertarInmueble(Inmueble inmueble);
-        Task<List<InmueblesCustom>> ObtenerInmueblesFavoritos(int idUsuario);
+        Task<List<InmueblesCustom>> ObtenerInmueblesFavoritos(int idInmueble);
         Task<string> AgregarInmuebleAFavoritos(int idUsuario, int idInmueble);
     }
 }

@@ -73,14 +73,14 @@ namespace api_miviajecr.Controllers
             }
         }
 
-        [HttpGet("obtenerInmueblesFavoritos/{idUsuario}")]
+        [HttpGet("obtenerInmueblesFavoritos/{idInmueble}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> ObtenerInmueblesFavoritos(int idUsuario)
+        public async Task<IActionResult> ObtenerInmueblesFavoritos(int idInmueble)
         {
             try
             {
-                var inmuebles = await _inmuebleRepositorio.ObtenerInmueblesFavoritos(idUsuario);
+                var inmuebles = await _inmuebleRepositorio.ObtenerInmueblesFavoritos(idInmueble);
 
                 if (inmuebles != null && inmuebles.Count > 0)
                 {

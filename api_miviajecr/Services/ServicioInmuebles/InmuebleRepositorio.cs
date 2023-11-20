@@ -48,10 +48,10 @@ namespace api_miviajecr.Services.ServicioInmueble
             }
         }
 
-        public async Task<List<InmueblesCustom>> ObtenerInmueblesFavoritos(int idUsuario)
+        public async Task<List<InmueblesCustom>> ObtenerInmueblesFavoritos(int idInmueble)
         {
             return await _dbContext.InmueblesCustom
-               .FromSqlRaw<InmueblesCustom>("ObtenerDetallesInmuebleFavoritos {0}", idUsuario)
+               .FromSqlRaw<InmueblesCustom>("ObtenerDetallesInmuebleFavoritos {0}", idInmueble)
                .ToListAsync();
 
         }
