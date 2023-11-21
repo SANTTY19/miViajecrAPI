@@ -1,11 +1,13 @@
 ﻿using api_miviajecr.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace api_miviajecr.Services.ServicioUsuario
-{//Este metodo como tal va hacer la inserccion del usuario,se conecta con los datos:aqui se ejecuta los store procedures,se conecta a la base de datos
+{
     public class UsuarioRepositorio : IUsuarioRepositorio
     {
         public readonly tiusr27pl_ApimisviajescrContext _dbContext;
@@ -15,69 +17,143 @@ namespace api_miviajecr.Services.ServicioUsuario
             _dbContext = context;
             
         }
-        public async Task<int> InsertaUsuario(Usuario usuario)
+        public async Task<string> InsertaUsuario(int idTipoUsuario, string nombre, string apellidos, DateTime fechaNacimiento, string numeroTelefono, string fotoIdentificacion, string correoElectronico, string contraseña)
         {
-            if (usuario != null)
+            string response = string.Empty;
+            try
             {
-                // Establecer propiedades del usuario manualmente (simplificado)
-                usuario.FechaCreacion = DateTime.Now;
-                usuario.EstaActivo = true;
+                string sql = @"exec [spInsertaUsuario] 
+                                @IdTipoUsuario,
+                                @Nombre,                              
+                                @Apellidos,
+                                @FechaNacimiento,
+                                @CorreoElectronico,   
+                                @NumeroTelefono,                        
+                                @Contraseña,
+                                @FotoIdentificacion,
+                                @DbRespuesta OUTPUT";
 
-                // Establecer valores predeterminados
-                usuario.FotoIdentificacion = " ";
-                usuario.PromedioCalificacion = 5;
-                usuario.SesionActiva = true;
-                usuario.Token = "Token01";
-                usuario.EstaActivo = true;
-                usuario.FueValidado = true;
-
-                // Puedes ajustar aquí para incluir solo los campos que deseas
-                var perfilSimplificado = new
+                List<SqlParameter> parms = new List<SqlParameter>
                 {
-                    usuario.IdUsuario,
-                    usuario.IdTipoUsuario,
-                    usuario.Nombre,
-                    usuario.Apellidos,
-                    usuario.FechaNacimiento,
-                    usuario.CorreoElectronico,
-                    usuario.NumeroTelefono,
-                    usuario.Contraseña,
-                    usuario.FotoIdentificacion,
-                    usuario.PromedioCalificacion,
-                    usuario.SesionActiva,
-                    usuario.Token,
-                    usuario.EstaActivo,
-                    usuario.FueValidado,
-                    usuario.FechaCreacion
+                    new SqlParameter { ParameterName = "@IdTipoUsuario", Value=idTipoUsuario},
+                    new SqlParameter { ParameterName = "@Nombre", Value=nombre},
+                    new SqlParameter { ParameterName = "@Apellidos", Value=apellidos},
+                    new SqlParameter { ParameterName = "@FechaNacimiento", Value=fechaNacimiento},
+                    new SqlParameter { ParameterName = "@CorreoElectronico", Value=correoElectronico},
+                    new SqlParameter { ParameterName = "@NumeroTelefono", Value=numeroTelefono},
+                    new SqlParameter { ParameterName = "@Contraseña", Value=contraseña},
+                    new SqlParameter { ParameterName = "@FotoIdentificacion", Value=fotoIdentificacion},
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
                 };
 
-                _dbContext.Usuarios.Add(usuario);
-               return await _dbContext.SaveChangesAsync();
-
-                //return Results.Created($"/PerfilesUsuarios/{usuario.IdUsuario}", perfilSimplificado);
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (parms[8].Value != DBNull.Value)
+                {
+                    response = parms[8].Value.ToString();
+                }
             }
-            else
+            catch (Exception e)
             {
-                return -1;
+                response = e.Message;
             }
-            
+            return response;
         }
 
-        public async Task<List<Usuario>> ObtenerUsuarios()
+        public async Task<string> LoginUsuario(string correoElectronico, string contraseña)
+        {
+            string response = string.Empty;
+            try
+            {
+                string sql = @"exec [spLogin] 
+                                @CorreoElectronico,                              
+                                @Contraseña,
+                                @DbRespuesta OUTPUT";
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@CorreoElectronico", Value=correoElectronico},
+                    new SqlParameter { ParameterName = "@Contraseña", Value=contraseña},
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (parms[2].Value != DBNull.Value)
+                {
+                    response = parms[2].Value.ToString();
+                }
+
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<string> LogoutUsuario(int idUsuario)
+        {
+            string response = string.Empty;
+            try
+            {
+                string sql = @"exec [spLogout] 
+                                @IdUsuario,
+                                @DbRespuesta OUTPUT";
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@IdUsuario", Value=idUsuario},
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (parms[1].Value != DBNull.Value)
+                {
+                    response = parms[1].Value.ToString();
+                }
+
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<string> ObtieneTokenPorIdUsuario(int idUsuario)
         {
             try
             {
-                var usuarios = await _dbContext.Usuarios.ToListAsync();
-                return usuarios;
+                string sql = @"exec [spObtieneToken] 
+                                @IdUsuario,
+                                @DbRespuesta OUTPUT";
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@IdUsuario", Value=idUsuario},
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (parms[1].Value != DBNull.Value)
+                {
+                    var jsonResult = new
+                    {
+                        token = parms[1].Value
+                    };
+                    return JsonConvert.SerializeObject(jsonResult);
+                }
+                else
+                {
+                    var jsonResult = new
+                    {
+                        token = ""
+                    };
+                    return JsonConvert.SerializeObject(jsonResult);
+                }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                // Loguea el error o realiza cualquier otra acción necesaria.
-                return null;
+                return e.Message;
             }
         }
-
-
-
     }
 }
