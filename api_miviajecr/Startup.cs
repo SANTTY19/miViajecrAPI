@@ -1,27 +1,21 @@
 using api_miviajecr.Models;
-using api_miviajecr.Services.ServicioUsuario;
-using api_miviajecr.Services.ServicioInmueble;
-using api_miviajecr.Services.Servicios;
 using api_miviajecr.Services.ServicioAmenidades;
+using api_miviajecr.Services.ServicioDenuncias;
+using api_miviajecr.Services.ServicioFavoritos;
+using api_miviajecr.Services.ServicioHistoricoLugaresVisitado;
+using api_miviajecr.Services.ServicioInmueble;
+using api_miviajecr.Services.ServicioInmuebles;
 using api_miviajecr.Services.ServicioPoliticas;
 using api_miviajecr.Services.ServicioRestricciones;
+using api_miviajecr.Services.Servicios;
 using api_miviajecr.Services.ServiciosReservaciones;
+using api_miviajecr.Services.ServicioUsuario;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using api_miviajecr.Services.ServicioDenuncias;
-using api_miviajecr.Services.ServicioHistoricoLugaresVisitado;
-using api_miviajecr.Services.ServicioFavoritos;
-using api_miviajecr.Services.ServicioInmuebles;
 
 namespace api_miviajecr
 {

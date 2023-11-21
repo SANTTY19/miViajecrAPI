@@ -12,6 +12,7 @@ namespace api_miviajecr.Models
         public string TipoInmueble1 { get; set; }
         public bool EstaActivo { get; set; }
         public DateTime FechaCreacion { get; set; }
+        public string IconUrl { get; set; }
 
     }
 }

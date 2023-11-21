@@ -8,10 +8,10 @@ namespace api_miviajecr.Models
     public partial class ServiciosPorInmueble
     {
         public int IdServicio { get; set; }
-        public int IdInmuebles { get; set; }
+        public int IdInmueble { get; set; }
         public bool EstaActivo { get; set; }
         public DateTime FechaCreacion { get; set; }
-        public int IdServiciosPorInmueble { get; set; }
+        public int IdServicioPorInmueble { get; set; }
 
 
     }

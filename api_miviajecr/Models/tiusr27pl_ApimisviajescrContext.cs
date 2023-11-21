@@ -18,6 +18,9 @@ namespace api_miviajecr.Models
             : base(options)
         {
         }
+
+        public virtual DbSet<DetalleInmueble> InmuebleCustom { get; set; }
+        public virtual DbSet<DetalleInmueble> CaracteristicasInmuebleCustom { get; set; }
         public virtual DbSet<DetalleInmueble> DetalleInmuebles { get; set; }
         public virtual DbSet<Amenidade> Amenidades { get; set; }
         public virtual DbSet<AmenidadesPorInmueble> AmenidadesPorInmuebles { get; set; }
@@ -84,7 +87,7 @@ namespace api_miviajecr.Models
 
             modelBuilder.Entity<AmenidadesPorInmueble>(entity =>
             {
-                entity.HasKey(e => e.IdAmenidadesPorInmueble);
+                entity.HasKey(e => e.IdAmenidadPorInmueble);
 
                 entity.ToTable("AmenidadesPorInmueble");
 
@@ -268,7 +271,7 @@ namespace api_miviajecr.Models
 
             modelBuilder.Entity<PoliticasPorInmueble>(entity =>
             {
-                entity.HasKey(e => e.IdPoliticasPorInmueble);
+                entity.HasKey(e => e.IdPoliticaPorInmueble);
 
                 entity.ToTable("PoliticasPorInmueble");
 
@@ -337,7 +340,7 @@ namespace api_miviajecr.Models
 
             modelBuilder.Entity<RestriccionesPorInmueble>(entity =>
             {
-                entity.HasKey(e => e.IdRestriccionesPorInmueble);
+                entity.HasKey(e => e.IdRestriccionPorInmueble);
 
                 entity.ToTable("RestriccionesPorInmueble");
 
@@ -361,7 +364,7 @@ namespace api_miviajecr.Models
 
             modelBuilder.Entity<ServiciosPorInmueble>(entity =>
             {
-                entity.HasKey(e => e.IdServiciosPorInmueble);
+                entity.HasKey(e => e.IdServicioPorInmueble);
 
                 entity.ToTable("ServiciosPorInmueble");
 

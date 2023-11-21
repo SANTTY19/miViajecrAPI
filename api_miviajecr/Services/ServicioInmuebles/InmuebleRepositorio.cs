@@ -21,30 +21,48 @@ namespace api_miviajecr.Services.ServicioInmueble
             return await _dbContext.Inmuebles.ToListAsync();
         }
 
-        public async Task<int> InsertarInmueble(Inmueble inmueble)
+        public async Task<string> InsertarInmueble(InmuebleCustom inmueble)
         {
             if (inmueble != null)
             {
-                // Puedes ajustar aquí para incluir solo los campos que deseas
-                var inmuebleSimplificado = new
+                string response = string.Empty;
+                try
                 {
-                    inmueble.IdInmueble,
-                    inmueble.IdUsuario,
-                    inmueble.IdTipoInmueble,
-                    inmueble.TituloInmueble,
-                    inmueble.DescripcionInmuebles,
-                    inmueble.PrecioPorNoche,
-                    inmueble.PromedioCalificacion,
-                    inmueble.EstaActivo,
-                    inmueble.FechaCreacion
+                    string sql = @"exec [spInsertaInmueble]
+                                @IdUsuario,                              
+                                @IdTipoInmueble,
+                                @Titulo,
+                                @Descripcion,                              
+                                @PrecioxNoche,
+                                @DbRespuesta OUTPUT";
+
+                    List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@IdUsuario", Value=inmueble.IdUsuario},
+                    new SqlParameter { ParameterName = "@IdTipoInmueble", Value=inmueble.IdTipoInmueble},
+                    new SqlParameter { ParameterName = "@Titulo", Value=inmueble.TituloInmueble},
+                    new SqlParameter { ParameterName = "@Descripcion", Value=inmueble.DescripcionInmueble},
+                    new SqlParameter { ParameterName = "@PrecioxNoche", Value=inmueble.PrecioPorNoche},
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
                 };
 
-                _dbContext.Inmuebles.Add(inmueble);
-                return await _dbContext.SaveChangesAsync();
+                    var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                    if (parms[5].Value != DBNull.Value)
+                    {
+                        response = parms[5].Value.ToString();
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    response = e.Message;
+                }
+                return response;
+
             }
             else
             {
-                return -1;
+                return "algo paso";
             }
         }
 
