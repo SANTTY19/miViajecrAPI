@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -18,7 +18,7 @@ namespace api_miviajecr.Models
             : base(options)
         {
         }
-
+        public virtual DbSet<CotizacionModel> Cotizaciones { get; set; }
         public virtual DbSet<DetalleInmueble> InmuebleCustom { get; set; }
         public virtual DbSet<DetalleInmueble> CaracteristicasInmuebleCustom { get; set; }
         public virtual DbSet<DetalleInmueble> DetalleInmuebles { get; set; }
