@@ -11,7 +11,7 @@ namespace api_miviajecr.Models
         public int IdInmueble { get; set; }
         public bool EstaActivo { get; set; }
         public DateTime FechaCreacion { get; set; }
-        public int IdPoliticasPorInmueble { get; set; }
+        public int IdPoliticaPorInmueble { get; set; }
 
       
     }

@@ -1,14 +1,16 @@
-﻿using System.Threading.Tasks;
-using System;
-using api_miviajecr.Models;
-using System.Collections.Generic;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace api_miviajecr.Services.ServicioUsuario
 {
     public interface IUsuarioRepositorio
     {
-        //Definicion de los metodos,No tiene logica
-        Task<int> InsertaUsuario(Usuario usuario);
-        Task<List<Usuario>> ObtenerUsuarios();
+        Task<string> InsertaUsuario(int idTipoUsuario, string nombre, string apellidos, DateTime fechaNacimiento, string numeroTelefono, string fotoIdentificacion, string correoElectronico, string contraseña);
+
+        Task<string> LoginUsuario(string correoElectronico, string contraseña);
+
+        Task<string> LogoutUsuario(int idUsuario);
+
+        Task<string> ObtieneTokenPorIdUsuario(int idUsuario);
     }
 }

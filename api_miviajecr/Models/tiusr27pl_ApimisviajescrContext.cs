@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -19,6 +19,8 @@ namespace api_miviajecr.Models
         {
         }
         public virtual DbSet<CotizacionModel> Cotizaciones { get; set; }
+        public virtual DbSet<DetalleInmueble> InmuebleCustom { get; set; }
+        public virtual DbSet<DetalleInmueble> CaracteristicasInmuebleCustom { get; set; }
         public virtual DbSet<DetalleInmueble> DetalleInmuebles { get; set; }
         public virtual DbSet<Amenidade> Amenidades { get; set; }
         public virtual DbSet<AmenidadesPorInmueble> AmenidadesPorInmuebles { get; set; }
@@ -50,6 +52,7 @@ namespace api_miviajecr.Models
         public virtual DbSet<UbicacionInmueble> UbicacionInmuebles { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<InmueblesCustom> InmueblesCustom { get; set; }
+        public virtual DbSet<InmueblesCards> InmueblesCards { get; set; }
 
 
 
@@ -85,7 +88,7 @@ namespace api_miviajecr.Models
 
             modelBuilder.Entity<AmenidadesPorInmueble>(entity =>
             {
-                entity.HasKey(e => e.IdAmenidadesPorInmueble);
+                entity.HasKey(e => e.IdAmenidadPorInmueble);
 
                 entity.ToTable("AmenidadesPorInmueble");
 
@@ -269,7 +272,7 @@ namespace api_miviajecr.Models
 
             modelBuilder.Entity<PoliticasPorInmueble>(entity =>
             {
-                entity.HasKey(e => e.IdPoliticasPorInmueble);
+                entity.HasKey(e => e.IdPoliticaPorInmueble);
 
                 entity.ToTable("PoliticasPorInmueble");
 
@@ -338,7 +341,7 @@ namespace api_miviajecr.Models
 
             modelBuilder.Entity<RestriccionesPorInmueble>(entity =>
             {
-                entity.HasKey(e => e.IdRestriccionesPorInmueble);
+                entity.HasKey(e => e.IdRestriccionPorInmueble);
 
                 entity.ToTable("RestriccionesPorInmueble");
 
@@ -362,7 +365,7 @@ namespace api_miviajecr.Models
 
             modelBuilder.Entity<ServiciosPorInmueble>(entity =>
             {
-                entity.HasKey(e => e.IdServiciosPorInmueble);
+                entity.HasKey(e => e.IdServicioPorInmueble);
 
                 entity.ToTable("ServiciosPorInmueble");
 
