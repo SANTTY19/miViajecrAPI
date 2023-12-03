@@ -74,7 +74,7 @@ namespace api_miviajecr.Services.ServicioUsuario
                 {
                     new SqlParameter { ParameterName = "@CorreoElectronico", Value=correoElectronico},
                     new SqlParameter { ParameterName = "@Contraseña", Value=contraseña},
-                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 500, Direction = System.Data.ParameterDirection.Output}
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 1000, Direction = System.Data.ParameterDirection.Output}
                 };
 
                 var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
