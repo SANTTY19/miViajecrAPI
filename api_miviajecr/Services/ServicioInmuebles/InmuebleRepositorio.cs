@@ -15,6 +15,14 @@ namespace api_miviajecr.Services.ServicioInmueble
         {
             _dbContext = dbContext;
         }
+        
+        public async Task<List<InmueblesCards>> ObtenerInmueblesCards()
+        {
+            // Ejecutar el stored procedure y mapear los resultados a la clase InmueblesCustom
+            var resultado = await _dbContext.InmueblesCards.FromSqlRaw("EXEC ObtenerInformacionGeneralInmuebles").ToListAsync();
+
+            return resultado;
+        }
 
         public async Task<List<Inmueble>> ObtenerInmuebles()
         {

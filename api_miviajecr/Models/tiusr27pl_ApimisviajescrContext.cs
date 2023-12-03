@@ -52,6 +52,7 @@ namespace api_miviajecr.Models
         public virtual DbSet<UbicacionInmueble> UbicacionInmuebles { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<InmueblesCustom> InmueblesCustom { get; set; }
+        public virtual DbSet<InmueblesCards> InmueblesCards { get; set; }
 
 
 
