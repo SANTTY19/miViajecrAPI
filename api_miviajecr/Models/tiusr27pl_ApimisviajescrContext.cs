@@ -18,6 +18,7 @@ namespace api_miviajecr.Models
             : base(options)
         {
         }
+        public virtual DbSet<CotizacionModel> Cotizaciones { get; set; }
         public virtual DbSet<DetalleInmueble> DetalleInmuebles { get; set; }
         public virtual DbSet<Amenidade> Amenidades { get; set; }
         public virtual DbSet<AmenidadesPorInmueble> AmenidadesPorInmuebles { get; set; }

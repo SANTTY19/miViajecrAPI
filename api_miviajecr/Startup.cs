@@ -22,6 +22,7 @@ using api_miviajecr.Services.ServicioDenuncias;
 using api_miviajecr.Services.ServicioHistoricoLugaresVisitado;
 using api_miviajecr.Services.ServicioFavoritos;
 using api_miviajecr.Services.ServicioInmuebles;
+using api_miviajecr.Services;
 
 namespace api_miviajecr
 {
@@ -47,6 +48,7 @@ namespace api_miviajecr
             {
                 o.UseSqlServer(Configuration.GetConnectionString("SqlConnection"));
             });
+            services.AddScoped<ICotizacion, Cotizacion >();
             services.AddScoped<IAmenidadRepositorio, AmenidadRepositorio>();
             services.AddScoped<IDetalle, Detalle>();
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
