@@ -19,8 +19,10 @@ namespace api_miviajecr.Models
         {
         }
 
-        public virtual DbSet<DetalleInmueble> InmuebleCustom { get; set; }
-        public virtual DbSet<DetalleInmueble> CaracteristicasInmuebleCustom { get; set; }
+        public virtual DbSet<CorreoElectronicoConfig> CorreoElectronicoConfig { get; set; }
+        public virtual DbSet<PlantillasNotificacionPorCorreo> PlantillasNotificacionPorCorreo { get; set; }
+        public virtual DbSet<InmuebleCustom> InmuebleCustom { get; set; }
+        public virtual DbSet<CaracteristicasInmuebleCustom> CaracteristicasInmuebleCustom { get; set; }
         public virtual DbSet<DetalleInmueble> DetalleInmuebles { get; set; }
         public virtual DbSet<Amenidade> Amenidades { get; set; }
         public virtual DbSet<AmenidadesPorInmueble> AmenidadesPorInmuebles { get; set; }

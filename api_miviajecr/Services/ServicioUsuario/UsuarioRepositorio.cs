@@ -17,6 +17,7 @@ namespace api_miviajecr.Services.ServicioUsuario
             _dbContext = context;
             
         }
+
         public async Task<string> InsertaUsuario(int idTipoUsuario, string nombre, string apellidos, DateTime fechaNacimiento, string numeroTelefono, string fotoIdentificacion, string correoElectronico, string contraseña)
         {
             string response = string.Empty;
@@ -73,7 +74,7 @@ namespace api_miviajecr.Services.ServicioUsuario
                 {
                     new SqlParameter { ParameterName = "@CorreoElectronico", Value=correoElectronico},
                     new SqlParameter { ParameterName = "@Contraseña", Value=contraseña},
-                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 500, Direction = System.Data.ParameterDirection.Output}
                 };
 
                 var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
@@ -154,6 +155,65 @@ namespace api_miviajecr.Services.ServicioUsuario
             {
                 return e.Message;
             }
+        }
+
+        public async Task<List<PlantillasNotificacionPorCorreo>> ObtienePlantillaPorTipoNotificacion(int idTipoNotificacion)
+        {            
+            return await _dbContext.PlantillasNotificacionPorCorreo
+                    .FromSqlRaw<PlantillasNotificacionPorCorreo>("spObtienePlantillaPorTipoNotificacion {0}", idTipoNotificacion)
+                    .ToListAsync();
+        }
+
+        public async Task<List<CorreoElectronicoConfig>> ObtieneCuentasAdminCorreo()
+        {
+            return await _dbContext.CorreoElectronicoConfig
+                    .FromSqlRaw<CorreoElectronicoConfig>("spObtieneCuentasAdminCorreos")
+                    .ToListAsync();
+        }
+
+        public async Task<List<PlantillasNotificacionPorCorreo>> ObtienePlantillasNotificaciones()
+        {
+            return await _dbContext.PlantillasNotificacionPorCorreo
+                    .FromSqlRaw<PlantillasNotificacionPorCorreo>("spObtienePlantillasNotificaciones")
+                    .ToListAsync();
+        }
+
+        public async Task<string> InsertaPlantilla(int idPlantilla, string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla)
+        {
+            string response = string.Empty;
+            try
+            {
+                string sql = @"exec [spInsertaPlantillasNotificaciones] 
+                                @IdPlantilla,
+                                @PlantillaHtml,                              
+                                @SujetoPlantilla,
+                                @TituloPlantilla,
+                                @CuerpoPlantilla,   
+                                @PieDePaginaPlantilla,
+                                @DbRespuesta OUTPUT";
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@IdPlantilla", Value=idPlantilla},
+                    new SqlParameter { ParameterName = "@PlantillaHtml", Value=plantillaHtml},
+                    new SqlParameter { ParameterName = "@SujetoPlantilla", Value=sujetoPlantilla},
+                    new SqlParameter { ParameterName = "@TituloPlantilla", Value=tituloPlantilla},
+                    new SqlParameter { ParameterName = "@CuerpoPlantilla", Value=cuerpoPlantilla},
+                    new SqlParameter { ParameterName = "@PieDePaginaPlantilla", Value=pieDePaginaPlantilla},
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (parms[6].Value != DBNull.Value)
+                {
+                    response = parms[6].Value.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            return response;
         }
     }
 }
