@@ -19,8 +19,6 @@ namespace api_miviajecr.Controllers
         }
 
         [HttpGet("obtenerReservaciones")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObtenerReservaciones()
         {
             try
@@ -43,9 +41,6 @@ namespace api_miviajecr.Controllers
         }
 
         [HttpPost("insertarReservacion")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> InsertarReservacion([FromBody] Reservacione reservacion)
         {
             if (reservacion == null)
@@ -69,6 +64,28 @@ namespace api_miviajecr.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
+            }
+        }
+
+        [HttpGet("obtenerReservacionesPorIdUsuario")]
+        public async Task<IActionResult> ObtenerReservacionesPorIdUsuario(int idUsuario)
+        {
+            try
+            {
+                var reservaciones = await _reservacioneRepositorio.ObtenerReservacionesPorIdUsuario(idUsuario);
+
+                if (reservaciones != null && reservaciones.Count > 0)
+                {
+                    return Ok(reservaciones);
+                }
+                else
+                {
+                    return NotFound("No tiene reservaciones.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
             }
         }
 

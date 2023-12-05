@@ -134,17 +134,90 @@ namespace api_miviajecr.Controllers
         }
 
         [HttpPost("api/insertaPlantilla")]
-        public async Task<IActionResult> InsertaPlantilla(int idPlantilla, string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla)
+        public async Task<IActionResult> InsertaPlantilla(string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla)
         {
-            //if (idUsuario == null)
-            //{
-            //    return BadRequest();
-            //}
+            if (plantillaHtml == null && sujetoPlantilla == null && tituloPlantilla == null && cuerpoPlantilla == null && pieDePaginaPlantilla == null)
+            {
+                return BadRequest("Revisa los parametros...");
+            }           
 
-            //return Ok(await _usuarioRepositorio.InsertaPlantilla(idUsuario));
-            return Ok();
-
+            return Ok(await _usuarioRepositorio.InsertaPlantilla(plantillaHtml, sujetoPlantilla, tituloPlantilla, cuerpoPlantilla, pieDePaginaPlantilla));
         }
 
+        [HttpGet("api/obtenerInfoUsuarioPorId")]
+        public async Task<IActionResult> ObtieneInfoUsuarioPorId(int idUsuario)
+        {
+            try
+            {
+                var usuario = await _usuarioRepositorio.ObtieneUsuarioPorId(idUsuario);
+                if (usuario != null)
+                {
+                    return Ok(usuario);
+                }
+                else
+                {
+                    return NotFound("Usuario no registrado.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpGet("api/verificaCorreoElectronico")]
+        public async Task<IActionResult> VerificaCorreoElectronico(string correoElectronico)
+        {
+            if (correoElectronico == null)
+            {
+                return BadRequest("Revisa los parametros...");
+            }
+
+            return Ok(await _usuarioRepositorio.VerificaCorreoElectronico(correoElectronico));
+        }
+
+        [HttpGet("api/obtenerNotificacionesPorIdUsuario")]
+        public async Task<IActionResult> ObtieneNotificacionesPorIdUsuario(int idUsuario)
+        {
+            try
+            {
+                var notificaciones = await _usuarioRepositorio.ObtieneNotificacionesPorIdUsuario(idUsuario);
+
+                if (notificaciones != null && notificaciones.Count > 0)
+                {
+                    return Ok(notificaciones);
+                }
+                else
+                {
+                    return NotFound("No tiene notificaciones.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpPost("api/insertaNotificacion")]
+        public async Task<IActionResult> InsertaNotificacion(int idUsuario, string notificacion)
+        {
+            if (idUsuario == null && notificacion == null)
+            {
+                return BadRequest("Revisa los parametros...");
+            }
+
+            return Ok(await _usuarioRepositorio.InsertaNotificacionUsuario(idUsuario, notificacion));
+        }
+
+        [HttpPut("api/actualizaNotificacion")]
+        public async Task<IActionResult> ActualizaNotificacion(int idNotificacion, bool fueLeida)
+        {
+            if (idNotificacion == null && fueLeida == null)
+            {
+                return BadRequest("Revisa los parametros...");
+            }
+
+            return Ok(await _usuarioRepositorio.ActualizaNotificacion(idNotificacion, fueLeida));
+        }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace api_miviajecr.Models
 {
@@ -22,8 +19,6 @@ namespace api_miviajecr.Models
         public List<PoliticasPorInmueble> Politicas { get; set; }
         public List<CaracteristicasInmuebleCustom> Caracteristicas { get; set; }
         public List<UbicacionInmueble> Ubicacion { get; set; }
-
-
-
+        public List<Descuentos> Descuentos { get; set; }
     }
 }

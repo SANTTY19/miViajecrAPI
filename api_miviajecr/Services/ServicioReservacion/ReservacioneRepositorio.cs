@@ -38,5 +38,12 @@ namespace api_miviajecr.Services.ServiciosReservaciones
                .FromSqlRaw<CalificacionesCustom>("ObtenerInfoReservacion {0}", idInmueble)
                .ToListAsync();
         }
+
+        public async Task<List<ReservacionCustom>> ObtenerReservacionesPorIdUsuario(int idUsuario)
+        {
+            return await _dbContext.ReservacionCustom.
+                  FromSqlRaw<ReservacionCustom>("ObtenerReservacionesPorUsuario {0}", idUsuario)
+                  .ToListAsync();
+        }
     }
 }
