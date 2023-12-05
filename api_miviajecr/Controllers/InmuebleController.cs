@@ -276,7 +276,7 @@ namespace api_miviajecr.Controllers
         }
 
         [HttpGet("api/verificaCuponDescuento")]
-        public async Task<IActionResult> VerificaCorreoElectronico(int idInmueble, string cuponDescuento)
+        public async Task<IActionResult> VerificaCuponDescuento(int idInmueble, string cuponDescuento)
         {
             if (idInmueble == null && cuponDescuento == null)
             {
