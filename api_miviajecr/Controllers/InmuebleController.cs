@@ -204,14 +204,14 @@ namespace api_miviajecr.Controllers
             }
         }
 
-        [HttpGet("obtenerInmueblesFavoritos/{idInmueble}")]
+        [HttpGet("ObtenerDetallesInmuebleFavoritos/{idUsuario}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> ObtenerInmueblesFavoritos(int idInmueble)
+        public async Task<IActionResult> ObtenerInmueblesFavoritos(int idUsuario)
         {
             try
             {
-                var inmuebles = await _inmuebleRepositorio.ObtenerInmueblesFavoritos(idInmueble);
+                var inmuebles = await _inmuebleRepositorio.ObtenerInmueblesFavoritos(idUsuario);
 
                 if (inmuebles != null && inmuebles.Count > 0)
                 {
@@ -228,7 +228,7 @@ namespace api_miviajecr.Controllers
             }
         }
 
-        [HttpPost("agregarInmuebleAFavoritos")]
+        [HttpPost("GuardarInmuebleFavorito")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

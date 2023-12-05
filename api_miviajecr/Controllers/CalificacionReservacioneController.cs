@@ -55,15 +55,23 @@ namespace api_miviajecr.Controllers
 
             try
             {
-                var result = await _calificacionReservacioneRepositorio.InsertarCalificacionReservacion(calificacionReservacion);
-
-                if (result > 0)
+                // Assuming you have validation logic for the model, you can add it here before inserting.
+                if (ModelState.IsValid)
                 {
-                    return Ok("Calificación de reservación insertada correctamente.");
+                    var result = await _calificacionReservacioneRepositorio.InsertarCalificacionReservacion(calificacionReservacion);
+
+                    if (result > 0)
+                    {
+                        return Ok("Calificación de reservación insertada correctamente.");
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Error al insertar la calificación de reservación.");
+                    }
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error al insertar la calificación de reservación.");
+                    return BadRequest(ModelState);
                 }
             }
             catch (Exception ex)

@@ -71,5 +71,30 @@ namespace api_miviajecr.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
             }
         }
+
+        [HttpGet("ObtenerInfoReservacion/{idInmueble}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ObtenerInfoReservacion(int idInmueble)
+        {
+            try
+            {
+                var calificaciones = await _reservacioneRepositorio.ObtenerInfoReservacion(idInmueble);
+
+                if (calificaciones != null && calificaciones.Count > 0)
+                {
+                    return Ok(calificaciones);
+                }
+                else
+                {
+                    return NotFound("No se encontraron calificaciones para el inmueble.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
     }
 }
