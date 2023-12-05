@@ -21,7 +21,17 @@ namespace api_miviajecr.Services.ServicioUsuario
 
         Task<List<PlantillasNotificacionPorCorreo>> ObtienePlantillasNotificaciones();
 
-        Task<string> InsertaPlantilla(int idPlantilla, string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla);
+        Task<string> InsertaPlantilla(string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla);
+
+        Task<List<UsuarioCustom>> ObtieneUsuarioPorId(int idUsuario);
+
+        Task<string> VerificaCorreoElectronico(string correoElectronico);
+
+        Task<List<Notificaciones>> ObtieneNotificacionesPorIdUsuario(int idUsuario);
+
+        Task<string> InsertaNotificacionUsuario (int idUsuario, string notificacion);
+
+        Task<string> ActualizaNotificacion(int idNotificacion, bool fueLeida);
 
     }
 }

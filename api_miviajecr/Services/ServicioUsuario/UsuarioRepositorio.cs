@@ -178,35 +178,129 @@ namespace api_miviajecr.Services.ServicioUsuario
                     .ToListAsync();
         }
 
-        public async Task<string> InsertaPlantilla(int idPlantilla, string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla)
+        public async Task<string> InsertaPlantilla(string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla)
         {
             string response = string.Empty;
             try
             {
-                string sql = @"exec [spInsertaPlantillasNotificaciones] 
-                                @IdPlantilla,
+                string sql = @"exec [spInsertaPlantillaNotificaciones]                                 
                                 @PlantillaHtml,                              
                                 @SujetoPlantilla,
                                 @TituloPlantilla,
                                 @CuerpoPlantilla,   
-                                @PieDePaginaPlantilla,
-                                @DbRespuesta OUTPUT";
+                                @PieDePaginaPlantilla";
 
                 List<SqlParameter> parms = new List<SqlParameter>
                 {
-                    new SqlParameter { ParameterName = "@IdPlantilla", Value=idPlantilla},
                     new SqlParameter { ParameterName = "@PlantillaHtml", Value=plantillaHtml},
                     new SqlParameter { ParameterName = "@SujetoPlantilla", Value=sujetoPlantilla},
                     new SqlParameter { ParameterName = "@TituloPlantilla", Value=tituloPlantilla},
                     new SqlParameter { ParameterName = "@CuerpoPlantilla", Value=cuerpoPlantilla},
-                    new SqlParameter { ParameterName = "@PieDePaginaPlantilla", Value=pieDePaginaPlantilla},
+                    new SqlParameter { ParameterName = "@PieDePaginaPlantilla", Value=pieDePaginaPlantilla},                    
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (affectedRows > 0)
+                {
+                    response = "La plantilla fue guardada exitosamente.";
+                }
+
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            return response;
+        }
+
+        public Task<List<UsuarioCustom>> ObtieneUsuarioPorId(int idUsuario)
+        {
+            return _dbContext.UsuarioCustom.
+                  FromSqlRaw<UsuarioCustom>("spObtieneUsuarioPorId {0}", idUsuario)
+                  .ToListAsync();
+        }
+
+        public async Task<string> VerificaCorreoElectronico(string correoElectronico)
+        {
+            string response = string.Empty;
+            try
+            {
+                string sql = @"exec [spVerificaCorreoExiste] 
+                                @CorreoElectronico,
+                                @DbRespuesta OUTPUT";
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@CorreoElectronico", Value=correoElectronico},
                     new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
                 };
 
                 var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
-                if (parms[6].Value != DBNull.Value)
+                if (parms[1].Value != DBNull.Value)
                 {
-                    response = parms[6].Value.ToString();
+                    response = parms[1].Value.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<List<Notificaciones>> ObtieneNotificacionesPorIdUsuario(int idUsuario)
+        {
+            return await _dbContext.Notificaciones.
+                  FromSqlRaw<Notificaciones>("spObtieneNotificacionesPorIdUsuario {0}", idUsuario)
+                  .ToListAsync();
+        }
+
+        public async Task<string> InsertaNotificacionUsuario(int idUsuario, string notificacion)
+        {
+            string response = string.Empty;
+            try
+            {
+                string sql = @"exec [spInsertaNotificacion]                                 
+                                @IdUsuario,                              
+                                @Notificacion";
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@IdUsuario", Value=idUsuario},
+                    new SqlParameter { ParameterName = "@Notificacion", Value=notificacion}
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (affectedRows > 0)
+                {
+                    response = "La notificacion se inserto exitosamente.";
+                }
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<string> ActualizaNotificacion(int idNotificacion, bool fueLeida)
+        {
+            string response = string.Empty;
+            try
+            {
+                string sql = @"exec [spActualizaNotificacion]                                 
+                                @IdNotificacion,                              
+                                @FueLeida";
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@IdNotificacion", Value=idNotificacion},
+                    new SqlParameter { ParameterName = "@FueLeida", Value=fueLeida}
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (affectedRows > 0)
+                {
+                    response = "La notificacion se actualizo exitosamente.";
                 }
             }
             catch (Exception e)

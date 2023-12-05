@@ -218,6 +218,15 @@ namespace api_miviajecr.Controllers
                         }
                     }
 
+                    int descuentoResult = 0;
+                    foreach (Descuentos item in inmueble.Descuentos)
+                    {
+                        Descuentos de = new Descuentos();
+                        de.IdInmueble = idInmueble;
+                        de.CodigoDescuento = item.CodigoDescuento;
+                        de.MontoDescuento = item.MontoDescuento;                        
+                        return Ok(await _inmuebleRepositorio.InsertarDescuentoPorInmueble(de));                        
+                    }
                 }
 
                 return Ok(inmuebleResult);                
@@ -264,6 +273,17 @@ namespace api_miviajecr.Controllers
             }
 
             return Ok(await _inmuebleRepositorio.AgregarInmuebleAFavoritos(idUsuario, idInmueble));
+        }
+
+        [HttpGet("api/verificaCuponDescuento")]
+        public async Task<IActionResult> VerificaCorreoElectronico(int idInmueble, string cuponDescuento)
+        {
+            if (idInmueble == null && cuponDescuento == null)
+            {
+                return BadRequest("Revisa los parametros...");
+            }
+
+            return Ok(await _inmuebleRepositorio.VerificaCuponDescuento(idInmueble, cuponDescuento));
         }
     }
 }

@@ -59,14 +59,12 @@ namespace api_miviajecr.Services.ServicioInmueble
                     {
                         response = parms[5].Value.ToString();
                     }
-
                 }
                 catch (Exception e)
                 {
                     response = e.Message;
                 }
                 return response;
-
             }
             else
             {
@@ -98,6 +96,66 @@ namespace api_miviajecr.Services.ServicioInmueble
 
                 _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
                 response = "Inmueble agregado a favoritos correctamente.";
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<string> VerificaCuponDescuento(int idInmueble, string cuponDescuento)
+        {
+            string response = string.Empty;
+            try
+            {
+                string sql = @"exec [spVerificaCuponDescuento] 
+                                @IdInmueble,
+                                @CuponDescuento,
+                                @DbRespuesta OUTPUT";
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@IdInmueble", Value=idInmueble},
+                    new SqlParameter { ParameterName = "@CuponDescuento", Value=cuponDescuento},
+                    new SqlParameter { ParameterName = "@DbRespuesta", SqlDbType = System.Data.SqlDbType.VarChar, Size = 100, Direction = System.Data.ParameterDirection.Output}
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (parms[2].Value != DBNull.Value)
+                {
+                    response = parms[2].Value.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<string> InsertarDescuentoPorInmueble(Descuentos descuento)
+        {
+            string response = string.Empty;
+            try
+            {
+                string sql = @"exec [spInsertaDescuentoInmueble]
+                                @IdInmueble,                              
+                                @CodigoDescuento,
+                                @MontoDescuento";
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@IdInmueble", Value=descuento.IdInmueble},
+                    new SqlParameter { ParameterName = "@CodigoDescuento", Value=descuento.CodigoDescuento},
+                    new SqlParameter { ParameterName = "@MontoDescuento", Value=descuento.MontoDescuento}
+                    
+                };
+
+                var affectedRows = _dbContext.Database.ExecuteSqlRaw(sql, parms.ToArray());
+                if (affectedRows > 0)
+                {
+                    response = "Cupon insertado correctamente.";
+                }
             }
             catch (Exception e)
             {

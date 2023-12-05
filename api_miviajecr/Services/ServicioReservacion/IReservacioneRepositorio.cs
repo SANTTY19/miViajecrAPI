@@ -10,5 +10,6 @@ namespace api_miviajecr.Services.ServiciosReservaciones
         Task<int> InsertarReservacion(Reservacione reservacion);
         Task<List<CalificacionesCustom>> ObtenerInfoReservacion(int idInmueble);
 
+        Task<List<ReservacionCustom>> ObtenerReservacionesPorIdUsuario(int idUsuario);
     }
 }
