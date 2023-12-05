@@ -33,5 +33,6 @@ namespace api_miviajecr.Services.ServicioUsuario
 
         Task<string> ActualizaNotificacion(int idNotificacion, bool fueLeida);
 
+        Task<List<Usuario>> ObtenerUsuarios();
     }
 }

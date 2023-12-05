@@ -8,5 +8,7 @@ namespace api_miviajecr.Services.ServicioInmueble
     {
         Task<List<TipoInmueble>> ObtenerTiposInmuebles();
         Task<int> InsertarTipoInmueble(TipoInmueble tipoInmueble);
+        Task<int> ModificarTipoInmueble(TipoInmueble tipoInmueble);
+
     }
 }

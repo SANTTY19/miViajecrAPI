@@ -72,5 +72,35 @@ namespace api_miviajecr.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
             }
         }
+        [HttpPut("modificarAmenidad")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ModificarAmenidad([FromBody] Amenidade amenidad)
+        {
+            if (amenidad == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var resultado = await _amenidadRepositorio.ModificarAmenidad(amenidad);
+
+                if (resultado > 0)
+                {
+                    return Ok("Amenidad modificada exitosamente.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error al modificar la amenidad.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
+            }
+        }
+
     }
 }

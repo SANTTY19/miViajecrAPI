@@ -73,5 +73,35 @@ namespace api_miviajecr.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
             }
         }
+        [HttpPut("modificarPolitica")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ModificarPolitica([FromBody] Politica politica)
+        {
+            if (politica == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var resultado = await _politicaRepositorio.ModificarPolitica(politica);
+
+                if (resultado > 0)
+                {
+                    return Ok("Política modificada exitosamente.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error al modificar la política.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
+            }
+        }
+
     }
 }

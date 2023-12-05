@@ -8,5 +8,7 @@ namespace api_miviajecr.Services.ServicioRestricciones
     {
         Task<List<Restriccione>> ObtenerRestricciones();
         Task<int> InsertarRestriccion(Restriccione restriccion);
+        Task<int> ModificarRestriccion(Restriccione restriccion);
+
     }
 }

@@ -8,5 +8,7 @@ namespace api_miviajecr.Services.ServicioPoliticas
     {
         Task<List<Politica>> ObtenerPoliticas();
         Task<int> InsertarPolitica(Politica politica);
+        Task<int> ModificarPolitica(Politica politica);
+
     }
 }

@@ -72,5 +72,35 @@ namespace api_miviajecr.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
             }
         }
+        [HttpPut("modificarTipoInmueble")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ModificarTipoInmueble([FromBody] TipoInmueble tipoInmueble)
+        {
+            if (tipoInmueble == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var resultado = await _tipoInmuebleRepositorio.ModificarTipoInmueble(tipoInmueble);
+
+                if (resultado > 0)
+                {
+                    return Ok("Tipo de inmueble modificado exitosamente.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error al modificar el tipo de inmueble.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
+            }
+        }
+
     }
 }

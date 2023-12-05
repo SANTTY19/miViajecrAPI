@@ -88,6 +88,28 @@ namespace api_miviajecr.Controllers
                 return Ok("Los token no coinciden.");
             }
         }
+        [HttpGet("api/usuarios")] // Ruta para obtener todos los usuarios
+        public async Task<IActionResult> ObtenerUsuarios()
+        {
+            try
+            {
+                // Lógica para obtener la lista de usuarios desde tu repositorio
+                List<Usuario> usuarios = await _usuarioRepositorio.ObtenerUsuarios(); // Asume que tienes un método en tu repositorio para obtener usuarios
+
+                if (usuarios != null && usuarios.Count > 0)
+                {
+                    return Ok(usuarios); // Devuelve la lista de usuarios en formato JSON si se encontraron usuarios
+                }
+                else
+                {
+                    return NotFound("No se encontraron usuarios"); // Si no se encuentran usuarios
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener usuarios: {ex.Message}"); // En caso de error interno del servidor
+            }
+        }
 
         [HttpGet("api/obtenerCuentasAdmin")]
         public async Task<IActionResult> ObtieneCuentasAdminCorreo()

@@ -8,5 +8,7 @@ namespace api_miviajecr.Services.ServicioAmenidades
     {
         Task<List<Amenidade>> ObtenerAmenidades();
         Task<int> InsertarAmenidad(Amenidade amenidad);
+        Task<int> ModificarAmenidad(Amenidade amenidad);
+
     }
 }

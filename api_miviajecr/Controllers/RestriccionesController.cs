@@ -73,5 +73,35 @@ namespace api_miviajecr.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
             }
         }
+        [HttpPut("modificarRestriccion")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ModificarRestriccion([FromBody] Restriccione restriccion)
+        {
+            if (restriccion == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var resultado = await _restriccionesRepositorio.ModificarRestriccion(restriccion);
+
+                if (resultado > 0)
+                {
+                    return Ok("Restricción modificada exitosamente.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error al modificar la restricción.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
+            }
+        }
+
     }
 }

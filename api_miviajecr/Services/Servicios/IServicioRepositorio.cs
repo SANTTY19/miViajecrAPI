@@ -9,5 +9,7 @@ namespace api_miviajecr.Services.Servicios
     {
         Task<List<Servicio>> ObtenerServicios();
         Task<int> InsertarServicio(Servicio servicio);
+        Task<int> ModificarServicio(Servicio servicio);
+
     }
 }

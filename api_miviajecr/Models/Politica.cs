@@ -13,6 +13,6 @@ namespace api_miviajecr.Models
         public bool EstaActivo { get; set; }
         public DateTime FechaCreacion { get; set; }
         public string IconUrl { get; set; }
-
+       
     }
 }

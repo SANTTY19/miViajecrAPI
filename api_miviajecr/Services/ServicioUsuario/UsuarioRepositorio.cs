@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace api_miviajecr.Services.ServicioUsuario
@@ -309,5 +311,33 @@ namespace api_miviajecr.Services.ServicioUsuario
             }
             return response;
         }
+        public async Task<List<Usuario>> ObtenerUsuarios()
+        {
+            try
+            {
+                var usuarios = await _dbContext.Usuarios
+                    .Select(u => new Usuario
+                    {
+                        IdUsuario = u.IdUsuario,
+                        IdTipoUsuario = u.IdTipoUsuario,
+                        Nombre = u.Nombre,
+                        Apellidos = u.Apellidos,
+                        FechaNacimiento = u.FechaNacimiento,
+                        NumeroTelefono = u.NumeroTelefono,
+                        FotoIdentificacion = u.FotoIdentificacion,
+                        PromedioCalificacion = u.PromedioCalificacion,
+                        EstaActivo = u.EstaActivo,
+                        FechaCreacion = u.FechaCreacion
+                    })
+                    .ToListAsync();
+
+                return usuarios;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener usuarios: " + ex.Message);
+            }
+        }
+
     }
 }
