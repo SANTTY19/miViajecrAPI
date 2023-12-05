@@ -1,8 +1,10 @@
-﻿using api_miviajecr.Services.ServicioUsuario;
+﻿using api_miviajecr.Models;
+using api_miviajecr.Services.ServicioUsuario;
 using MiBancoAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace api_miviajecr.Controllers
@@ -11,12 +13,14 @@ namespace api_miviajecr.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly tiusr27pl_ApimisviajescrContext _dbContext;
         EmailHelper _emailHelper;
 
-        public UsuarioController(IUsuarioRepositorio usuarioRepositorio)
+        public UsuarioController(tiusr27pl_ApimisviajescrContext dbContext, IUsuarioRepositorio usuarioRepositorio)
         {
             _usuarioRepositorio = usuarioRepositorio;
-            _emailHelper = new EmailHelper();
+            _dbContext = dbContext;
+            _emailHelper = new EmailHelper(_dbContext, _usuarioRepositorio);
         }
 
         [HttpPost("api/registrarUsuario")]
@@ -46,7 +50,8 @@ namespace api_miviajecr.Controllers
                 dynamic data = JObject.Parse(jsonResponse);
                 string dbToken = data.token;
 
-                _emailHelper.EnviarCorreoElectronico(correoElectronico, "miViajeCR | Codigo de verificación", "Tu código es: \n " + dbToken);
+                //_emailHelper.EnviarCorreoElectronico(correoElectronico, "miViajeCR | Codigo de verificación", "Tu código es: \n " + dbToken);
+                await _emailHelper.EnviarCorreoElectronico(1, correoElectronico, dbToken);
             }
 
             return Ok(result);
@@ -75,13 +80,70 @@ namespace api_miviajecr.Controllers
             dynamic data = JObject.Parse(result);
             string dbToken = data.token;
             if (dbToken.ToLower() == token.ToLower())
-            {
+            {                                
                 return Ok("Token confirmado.");
             }
             else
             {
                 return Ok("Los token no coinciden.");
             }
+        }
+
+        [HttpGet("api/obtenerCuentasAdmin")]
+        public async Task<IActionResult> ObtieneCuentasAdminCorreo()
+        {
+            try
+            {
+                var cuentas = await _usuarioRepositorio.ObtieneCuentasAdminCorreo();
+
+                if (cuentas != null && cuentas.Count > 0)
+                {
+                    return Ok(cuentas);
+                }
+                else
+                {
+                    return NotFound("No se encontraron cuentas.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpGet("api/obtenerPlantillasNotificaciones")]
+        public async Task<IActionResult> ObtienePlantillasNotificaciones()
+        {
+            try
+            {
+                var plantillas = await _usuarioRepositorio.ObtienePlantillasNotificaciones();
+
+                if (plantillas != null && plantillas.Count > 0)
+                {
+                    return Ok(plantillas);
+                }
+                else
+                {
+                    return NotFound("No se encontraron plantillas.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+        }
+
+        [HttpPost("api/insertaPlantilla")]
+        public async Task<IActionResult> InsertaPlantilla(int idPlantilla, string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla)
+        {
+            //if (idUsuario == null)
+            //{
+            //    return BadRequest();
+            //}
+
+            //return Ok(await _usuarioRepositorio.InsertaPlantilla(idUsuario));
+            return Ok();
+
         }
 
     }

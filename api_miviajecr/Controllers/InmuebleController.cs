@@ -42,6 +42,30 @@ namespace api_miviajecr.Controllers
             _caracteristicaRepositorio = caracteristicaRepositorio;
         }
 
+        [HttpGet("obtenerInmueblesCards")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ObtenerInmueblesCards()
+        {
+            try
+            {
+                var inmueblesCards = await _inmuebleRepositorio.ObtenerInmueblesCards();
+
+                if (inmueblesCards != null && inmueblesCards.Count > 0)
+                {
+                    return Ok(inmueblesCards);
+                }
+                else
+                {
+                    return NotFound("No se encontraron inmuebles.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
+            }
+        }
+
         [HttpGet("obtenerInmuebles")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

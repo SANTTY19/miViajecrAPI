@@ -9,15 +9,15 @@ namespace api_miviajecr.Models
     public class InmueblesCustom
     {
         [Key]
-        public int IdInmueble { get; set; }
+        public int inmuebleId { get; set; }
 
-        public string ImagenURL { get; set; }
+        public string inmuebleURL { get; set; }
 
-        public string Direccion { get; set; }
+        public string direccion { get; set; }
 
-        public decimal CalificacionPromedio { get; set; }
+        public decimal calificacion { get; set; }
 
-        public decimal PrecioPorNoche { get; set; }
+        public decimal precioNoche { get; set; }
     }
 }
 
