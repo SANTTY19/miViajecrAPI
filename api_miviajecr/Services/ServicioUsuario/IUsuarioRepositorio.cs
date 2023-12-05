@@ -1,4 +1,6 @@
-﻿using System;
+﻿using api_miviajecr.Models;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace api_miviajecr.Services.ServicioUsuario
@@ -12,5 +14,14 @@ namespace api_miviajecr.Services.ServicioUsuario
         Task<string> LogoutUsuario(int idUsuario);
 
         Task<string> ObtieneTokenPorIdUsuario(int idUsuario);
+
+        Task<List<PlantillasNotificacionPorCorreo>> ObtienePlantillaPorTipoNotificacion(int idTipoNotificacion);
+
+        Task<List<CorreoElectronicoConfig>> ObtieneCuentasAdminCorreo();
+
+        Task<List<PlantillasNotificacionPorCorreo>> ObtienePlantillasNotificaciones();
+
+        Task<string> InsertaPlantilla(int idPlantilla, string plantillaHtml, string sujetoPlantilla, string tituloPlantilla, string cuerpoPlantilla, string pieDePaginaPlantilla);
+
     }
 }

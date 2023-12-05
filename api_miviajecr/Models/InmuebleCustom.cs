@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +8,8 @@ namespace api_miviajecr.Models
 {
     public class InmuebleCustom
     {
-        //public int IdInmueble { get; set; }
+        [Key]
+        public int IdInmueble { get; set; }
         public int IdUsuario { get; set; }
         public int IdTipoInmueble { get; set; }
         public string TituloInmueble { get; set; }
